@@ -1,55 +1,47 @@
 package com.dalydays.android.fullvolumetext;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by edaly on 7/25/2016.
  */
 public class MySMSReceiver extends BroadcastReceiver {
 
-    public static final String SMS_EXTRA_NAME = "pdus";
-    private String TAG = MySMSReceiver.class.getSimpleName();
+    private static final String TAG = MySMSReceiver.class.getSimpleName();
 
     public MySMSReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Bundle extras = intent.getExtras();
+        Bundle bundle = intent.getExtras();
 
-        SmsMessage[] smsMessages = null;
+        SmsMessage[] msgs = null;
 
-        String message = "";
+        String str = "";
 
-        if ( extras != null ) {
-            // Get received SMS array
-            Object[] smsExtra = (Object[]) extras.get( SMS_EXTRA_NAME );
+        if (bundle != null) {
+            // Retrieve the SMS messages received
+            Object[] pdus = (Object[]) bundle.get("pdus");
+            msgs = new SmsMessage[pdus.length];
 
-            for ( int i = 0; i < smsExtra.length; ++i ) {
-                SmsMessage sms = SmsMessage.createFromPdu((byte[])smsExtra[i]);
-
-                String body = sms.getMessageBody().toString();
-                String address = sms.getOriginatingAddress();
-
-                message += "SMS from " + address + " :\n";
-                message += body + "\n";
+            // for every SMS message received
+            for (int i = 0; i < msgs.length; i++) {
+                // convert Object array
+                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                // sender's phone number
+                str += "FullVolumeText received SMS from " + msgs[i].getOriginatingAddress() + " : ";
+                // get the text message
+                str += msgs[i].getMessageBody().toString() + "\n";
             }
 
             // Display SMS message
-                Toast.makeText( context, message, Toast.LENGTH_SHORT ).show();
-                Log.v(TAG, message);
+                Log.d(TAG, str);
             }
     }
 }
