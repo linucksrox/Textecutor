@@ -1,6 +1,7 @@
 package com.dalydays.android.fullvolumetext;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +19,7 @@ import org.w3c.dom.Text;
  */
 public class MySMSReceiver extends BroadcastReceiver {
 
+    public static final String SMS_EXTRA_NAME = "pdus";
     private String TAG = MySMSReceiver.class.getSimpleName();
 
     public MySMSReceiver() {
@@ -25,30 +27,29 @@ public class MySMSReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Bundle bundle = intent.getExtras();
+        Bundle extras = intent.getExtras();
 
-        SmsMessage[] msgs = null;
+        SmsMessage[] smsMessages = null;
 
-        String str = "";
+        String message = "";
 
-        if (bundle != null) {
-            // Retreive the SMS messages received
-            Object[] pdus = (Object[]) bundle.get("pdus");
-            msgs = new SmsMessage[pdus.length];
+        if ( extras != null ) {
+            // Get received SMS array
+            Object[] smsExtra = (Object[]) extras.get( SMS_EXTRA_NAME );
 
-            // for every SMS message received
-            for (int i = 0; i < msgs.length; i++) {
-                // convert Object array
-                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                // sender's phone number
-                str += "SMS from " + msgs[i].getOriginatingAddress() + " : ";
-                // get the text message
-                str += msgs[i].getMessageBody().toString();
-                // newline <img draggable="false" class="emoji" alt=":)" src="https://s.w.org/images/core/emoji/72x72/1f642.png">
-                str += "\n";
+            for ( int i = 0; i < smsExtra.length; ++i ) {
+                SmsMessage sms = SmsMessage.createFromPdu((byte[])smsExtra[i]);
+
+                String body = sms.getMessageBody().toString();
+                String address = sms.getOriginatingAddress();
+
+                message += "SMS from " + address + " :\n";
+                message += body + "\n";
             }
 
-            Log.d(TAG, str);
-        }
+            // Display SMS message
+                Toast.makeText( context, message, Toast.LENGTH_SHORT ).show();
+                Log.v(TAG, message);
+            }
     }
 }
