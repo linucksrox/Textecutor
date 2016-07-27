@@ -40,8 +40,8 @@ public class MySMSReceiver extends BroadcastReceiver {
                 str += msgs[i].getMessageBody().toString() + "\n";
             }
 
-            // Display SMS message
-                Log.d(TAG, str);
-            }
+            // Disable do not disturb mode (if applied), and turn the volume all the way up
+            // http://stackoverflow.com/questions/31387137/android-detect-do-not-disturb-status
+        }
     }
 }
