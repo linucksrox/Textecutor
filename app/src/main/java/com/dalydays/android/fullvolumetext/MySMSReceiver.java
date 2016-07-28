@@ -21,7 +21,8 @@ public class MySMSReceiver extends BroadcastReceiver {
 
         SmsMessage[] msgs = null;
 
-        String str = "";
+        String sender = "";
+        String messageString = "";
 
         if (bundle != null) {
             // Retrieve the SMS messages received
@@ -32,19 +33,31 @@ public class MySMSReceiver extends BroadcastReceiver {
             for (int i = 0; i < msgs.length; i++) {
                 // convert Object array
                 msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                // sender's phone number
-                str += "FullVolumeText received SMS from " + msgs[i].getOriginatingAddress() + " : ";
+
+                // get sender's phone number
+                if (i == 0) {
+                    sender = msgs[i].getOriginatingAddress();
+                }
+
                 // get the text message
-                str += msgs[i].getMessageBody().toString() + "\n";
+                messageString += msgs[i].getMessageBody().toString() + "\n";
             }
         }
 
-        // Disable do not disturb mode (if applied), and turn the volume all the way up
-        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        am.setStreamVolume(AudioManager.STREAM_RING, am.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_ALLOW_RINGER_MODES);
+        // Verify that the message matches the command needed to turn the volume up
+        if (messageString.toLowerCase().contains("full volume")) {
 
-        // Show a toast message letting the user know if they happen to be watching the screen
-        Toast.makeText(context, "FullVolumeText turned up your volume to the max!", Toast.LENGTH_LONG).show();
+            // Disable do not disturb mode (if applied), and turn the volume all the way up
+            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            am.setStreamVolume(AudioManager.STREAM_RING, am.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_ALLOW_RINGER_MODES);
+
+            Toast.makeText(context, sender + " turned up your volume to the max!", Toast.LENGTH_LONG).show();
+        }
+        else {
+            // debug toast
+            Toast.makeText(context, sender + " text received, but didn't contain any commands.", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
