@@ -58,6 +58,5 @@ public class MySMSReceiver extends BroadcastReceiver {
             // debug toast
             Toast.makeText(context, sender + " text received, but didn't contain any commands.", Toast.LENGTH_LONG).show();
         }
-
     }
 }
