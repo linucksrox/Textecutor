@@ -45,19 +45,24 @@ public class MySMSReceiver extends BroadcastReceiver {
             }
         }
 
-        // Verify that the message matches the command needed to turn the volume up
-        if (messageString.toLowerCase().contains("full volume")) {
+        // Verify that the sender is allowed and the message matches the command needed to turn the volume up
+        if (sender.contains("hardcoded phone number here")) {
+            if (messageString.toLowerCase().contains("full volume")) {
 
-            // Disable do not disturb mode (if applied), and turn the volume all the way up
-            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-            am.setStreamVolume(AudioManager.STREAM_RING, am.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_ALLOW_RINGER_MODES);
+                // Disable do not disturb mode (if applied), and turn the volume all the way up
+                AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                am.setStreamVolume(AudioManager.STREAM_RING, am.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_ALLOW_RINGER_MODES);
 
-            Toast.makeText(context, sender + " turned up your volume to the max!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, sender + " turned up your volume to the max!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                // debug toast
+                Toast.makeText(context, sender + " text received, but didn't contain any commands.", Toast.LENGTH_LONG).show();
+            }
         }
         else {
-            // debug toast
-            Toast.makeText(context, sender + " text received, but didn't contain any commands.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, sender + " text received, but not allowed to send commands.", Toast.LENGTH_LONG).show();
         }
     }
 }
