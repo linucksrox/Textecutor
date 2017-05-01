@@ -41,24 +41,26 @@ public class MySMSReceiver extends BroadcastReceiver {
                 }
 
                 // get the text message
-                messageString += msgs[i].getMessageBody().toString() + "\n";
+                messageString += msgs[i].getMessageBody() + "\n";
             }
         }
 
         // Verify that the sender is allowed and the message matches the command needed to turn the volume up
-        if (sender.contains("hardcoded phone number here")) {
+        if (sender.contains("6505551212")) {
             if (messageString.toLowerCase().contains("full volume")) {
 
                 // Disable do not disturb mode (if applied), and turn the volume all the way up
                 AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                // set ringer mode to normal, taking device out of silent mode if applicable
                 am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                // turn up volume to the max
                 am.setStreamVolume(AudioManager.STREAM_RING, am.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_ALLOW_RINGER_MODES);
 
                 Toast.makeText(context, sender + " turned up your volume to the max!", Toast.LENGTH_LONG).show();
             }
             else {
                 // debug toast
-                Toast.makeText(context, sender + " text received, but didn't contain any commands.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, sender + " text received from authorized user, but didn't contain any commands.", Toast.LENGTH_LONG).show();
             }
         }
         else {
