@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Full Volume Text</string>
+    <string name="pick_contact_button_text">Pick Contact</string>
 </resources>
