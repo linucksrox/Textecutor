@@ -1,4 +1,4 @@
-package com.dalydays.android.fullvolumetext;
+package com.dalydays.android.textecutor;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
-import android.util.Log;
 import android.widget.Toast;
 
 /**

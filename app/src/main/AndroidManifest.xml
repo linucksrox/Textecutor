@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.dalydays.android.fullvolumetext"
+<manifest package="com.dalydays.android.textecutor"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.dalydays.android.textecutor.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".MySMSReceiver"
+            android:name="com.dalydays.android.textecutor.MySMSReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="999">

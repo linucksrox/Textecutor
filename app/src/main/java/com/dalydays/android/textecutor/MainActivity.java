@@ -1,4 +1,4 @@
-package com.dalydays.android.fullvolumetext;
+package com.dalydays.android.textecutor;
 
 import android.Manifest;
 import android.app.NotificationManager;

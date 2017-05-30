@@ -1,4 +1,4 @@
-package com.dalydays.android.fullvolumetext;
+package com.dalydays.android.textecutor;
 
 import org.junit.Test;
 
