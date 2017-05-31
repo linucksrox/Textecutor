@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Textecutor</string>
-    <string name="pick_contact_button_text">Pick Contact</string>
+    <string name="add_contact_button_text">Add Authorized Contact</string>
 </resources>
