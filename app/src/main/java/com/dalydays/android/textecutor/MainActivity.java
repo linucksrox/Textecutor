@@ -2,6 +2,8 @@ package com.dalydays.android.textecutor;
 
 import android.Manifest;
 import android.app.NotificationManager;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,15 +19,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.dalydays.android.textecutor.data.TextecutorContract.*;
 
 public class MainActivity extends AppCompatActivity {
 
     static final String LOG_TAG = MainActivity.class.getSimpleName();
     static final int MY_RECEIVE_SMS_REQUEST_CODE = 1;
     static final int PICK_CONTACT = 1;
-    Button pickContactButton;
-    TextView contactInfo;
+    Button addContactButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(getNotificationAccessIntent);
         }
 
-        pickContactButton = (Button) findViewById(R.id.btn_pick_contact);
-        pickContactButton.setOnClickListener(new View.OnClickListener() {
+        addContactButton = (Button) findViewById(R.id.btn_add_authorized_contact);
+        addContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        contactInfo = (TextView) findViewById(R.id.tv_contact_info);
+        // set up ListView and adapter
     }
 
     @Override
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         } else {
-            Log.e(LOG_TAG, "Failed to pick contact");
+            Log.e(LOG_TAG, "Failed to pick contact, resultCode: " + resultCode);
         }
     }
 
@@ -92,8 +95,25 @@ public class MainActivity extends AppCompatActivity {
             phoneNo = cursor.getString(phoneIndex);
             name = cursor.getString(nameIndex);
             Log.d(LOG_TAG, "Contact name/phone number: " + name + "/" + phoneNo);
-            // Set the value to the TextView
-            contactInfo.setText(name + " / " + phoneNo);
+
+            /* Insert contact into allowed contact table */
+            // create map of values
+            ContentValues values = new ContentValues();
+            values.put(AllowedContactEntry.COLUMN_NAME_NAME, name);
+            values.put(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER, phoneNo);
+
+            // insert the new row using the content provider
+            Uri newProductUri = getContentResolver().insert(AllowedContactEntry.CONTENT_URI, values);
+            Long newRowId = ContentUris.parseId(newProductUri);
+
+            if (newRowId >= 1) {
+                // OMG it actually worked!
+                Toast.makeText(this, "OMG You added a contact to the allowed list!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // DANG fail
+                Toast.makeText(this, "DANG it failed!", Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
