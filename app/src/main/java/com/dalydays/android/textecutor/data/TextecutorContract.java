@@ -22,8 +22,8 @@ public final class TextecutorContract {
      */
     public static class AllowedContactEntry implements BaseColumns {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_URI, PATH_ALLOWED_CONTACT);
-        public static final String PRODUCT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ALLOWED_CONTACT;
-        public static final String PRODUCT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ALLOWED_CONTACT;
+        public static final String CONTACT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ALLOWED_CONTACT;
+        public static final String CONTACT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ALLOWED_CONTACT;
         public static final String TABLE_NAME = "allowedcontact";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_PHONE_NUMBER = "phonenumber";
