@@ -19,9 +19,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dalydays.android.textecutor.data.TextecutorContract.*;
+import com.dalydays.android.textecutor.data.TextecutorCursorAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     static final int MY_RECEIVE_SMS_REQUEST_CODE = 1;
     static final int PICK_CONTACT = 1;
     Button addContactButton;
+    ListView mContactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // set up ListView and adapter
+        mContactList = (ListView) findViewById(R.id.allowed_contacts_list);
+        printAllowedContactList();
     }
 
     @Override
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             switch (requestCode) {
                 case PICK_CONTACT:
                     contactPicked(data);
+                    printAllowedContactList();
                     break;
             }
         } else {
@@ -117,6 +123,21 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void printAllowedContactList() {
+        String[] projection = {
+                AllowedContactEntry._ID,
+                AllowedContactEntry.COLUMN_NAME_NAME,
+                AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
+        };
+
+        String sortOrder = AllowedContactEntry.COLUMN_NAME_NAME + " ASC";
+
+        Cursor cursor = getContentResolver().query(AllowedContactEntry.CONTENT_URI, projection, null, null, sortOrder);
+
+        TextecutorCursorAdapter contactCursorAdapter = new TextecutorCursorAdapter(this, cursor);
+        mContactList.setAdapter(contactCursorAdapter);
     }
 }
 
