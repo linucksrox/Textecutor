@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,10 +15,12 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -61,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
 
         // set up ListView and adapter
         mContactList = (ListView) findViewById(R.id.allowed_contacts_list);
+        mContactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                showDeleteConfirmationDialog(id);
+            }
+        });
         printAllowedContactList();
     }
 
@@ -139,11 +148,53 @@ public class MainActivity extends AppCompatActivity {
         TextecutorCursorAdapter contactCursorAdapter = new TextecutorCursorAdapter(this, cursor);
         mContactList.setAdapter(contactCursorAdapter);
     }
+
+    private void showDeleteConfirmationDialog(final long contactId) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_confirmation_message);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the contact.
+                deleteContact(contactId);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteContact(long contactId) {
+        // Get the contact Uri
+        Uri contactContentUri = ContentUris.withAppendedId(AllowedContactEntry.CONTENT_URI, contactId);
+
+        int rowsDeleted = getContentResolver().delete(contactContentUri, null, null);
+
+        printAllowedContactList();
+
+        // Show a toast with the results
+        if (rowsDeleted > 0) {
+            Toast.makeText(this, R.string.toast_message_deletion_successful, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, R.string.toast_message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
-// TODO Allow the user to choose from a list of contacts from the contacts content provider, so that only the contacts chosen are allowed to send text commands
+// DONE Allow the user to choose from a list of contacts from the contacts content provider, so that only the contacts chosen are allowed to send text commands
 // TODO Allow the user to change the text string that initiates the full volume command
 // TODO Allow the user to add different types of commands, with different text strings, and tied to different sets of authorized users (or a global list)
 // TODO Wizard for implementing common use cases like full volume for trusted contacts
 // TODO Help within the app explaining how to do things, as interactive as possible (or the app should be as intuitive as possible, so documentation is not required)
-// TODO Implement a SQLite database to store preferences, authorized contacts, blocked numbers, etc.
+// DONE Implement a SQLite database to store preferences, authorized contacts, blocked numbers, etc.
