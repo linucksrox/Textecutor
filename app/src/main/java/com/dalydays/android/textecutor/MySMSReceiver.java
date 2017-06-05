@@ -74,7 +74,7 @@ public class MySMSReceiver extends BroadcastReceiver {
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !notificationManager.isNotificationPolicyAccessGranted()) {
                         // this should be a notification eventually, but for now a toast will have to do
-                        Toast.makeText(context, "You need to give this app permission to change notification settings!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "You need to give Textecutor permission to change notification settings!", Toast.LENGTH_LONG).show();
                         return;
                     }
 
