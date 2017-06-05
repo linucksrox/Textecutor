@@ -12,7 +12,7 @@ Inspired by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch
 
 ## Ideas to be implemented...
 1. Ability to change commands, or add multiple commands for a given action
-1. Assign actions to commands (turning the ringer volume all the way up is an action)
+1. Assign actions to commands (turning the ringtone volume all the way up is an action)
 1. Assign authorized users per command/action
 1. "Where are you?" type command/action where it looks up the GPS coordinates and responds with a Google Maps link automatically
 1. Ability to authorize via passphrase, in case of lost phone, etc.
