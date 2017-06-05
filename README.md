@@ -1,5 +1,5 @@
 # Textecutor
-Inspired by the app Tasker, my goal is to make a user friendly app that takes action based on text message commands while keeping security and privacy in mind.
+Inspired by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm&hl=en), Textecutor is a user friendly app that takes action based on text message commands while keeping security and privacy in mind. Anyone should be able to use it easily.
 
 ## Examples
 Have you ever needed to call someone, but they always have their phone on silent? Install this app on their phone, allowing you to send them a text message, something like "full volume" and it cranks the ringtone volume all the way to 11. Now you're sure to get their attention!
