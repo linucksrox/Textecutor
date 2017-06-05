@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Show a toast with the results
         if (rowsDeleted > 0) {
-            Toast.makeText(this, R.string.toast_message_deletion_successful, Toast.LENGTH_SHORT).show();
+            Log.v(LOG_TAG, getResources().getString(R.string.toast_message_deletion_successful));
         }
         else {
             Toast.makeText(this, R.string.toast_message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
