@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private void contactPicked(Intent data) {
         Cursor cursor = null;
         try {
-            String phoneNo = null ;
-            String name = null;
+            String phoneNo;
+            String name;
             // getData() method will have the Content Uri of the selected contact
             Uri uri = data.getData();
             //Query the content uri
@@ -107,7 +107,11 @@ public class MainActivity extends AppCompatActivity {
             int  phoneIndex =cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             // column index of the contact name
             int  nameIndex =cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+            // get the phone number and parse it to remove non-numeric values
             phoneNo = cursor.getString(phoneIndex);
+            phoneNo = phoneNo.replaceAll("[^\\d]", "");
+
             name = cursor.getString(nameIndex);
             Log.d(LOG_TAG, "Contact name/phone number: " + name + "/" + phoneNo);
 
