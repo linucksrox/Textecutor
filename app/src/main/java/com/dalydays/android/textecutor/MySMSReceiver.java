@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -70,14 +71,15 @@ public class MySMSReceiver extends BroadcastReceiver {
                 am.setStreamVolume(AudioManager.STREAM_RING, am.getStreamMaxVolume(AudioManager.STREAM_RING), AudioManager.FLAG_ALLOW_RINGER_MODES);
 
                 Toast.makeText(context, sender + " turned up your volume to the max!", Toast.LENGTH_LONG).show();
+                Log.v(LOG_TAG, sender + " turned your volume to the max!");
             }
             else {
                 // debug toast
-                Toast.makeText(context, sender + " text received from authorized user, but didn't contain any commands.", Toast.LENGTH_LONG).show();
+                Log.v(LOG_TAG, " text received from authorized user, but didn't contain any commands.");
             }
-        }
-//        else {
-//            Toast.makeText(context, sender + " text received, but not allowed to send commands.", Toast.LENGTH_LONG).show();
 //        }
-//    }
+//        else {
+//            Log.v(LOG_TAG, " text received, but not allowed to send commands.");
+//        }
+    }
 }
