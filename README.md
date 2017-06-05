@@ -1,7 +1,9 @@
 # Textecutor
-Have you ever tried calling your wife, but she has her phone on silent so you can't get ahold of her? This app allows you to send her phone a text message, something like "full volume" and it cranks the ringtone volume all the way to 11. Then you have a better chance of getting through!
+Inspired by the app Tasker, my goal is to make a user friendly app that takes action based on text message commands while keeping security and privacy in mind.
 
-Inspired by the app Tasker, my goal is to make a user friendly app that responds to text message commands.
+## Examples
+Have you ever needed to call someone, but they always have their phone on silent? Install this app on their phone, allowing you to send them a text message, something like "full volume" and it cranks the ringtone volume all the way to 11. Now you're sure to get their attention!
+In other words, John installs this app on Patty's phone and adds himself as an authorized contact. Now John can send text message commands to Patty which the app reacts to. So now if John texts "full volume" to Patty, her ringtone will be maxed out and she might actually hear the phone ringing next time John calls.
 
 ## Current Features
 1. Turn up ringer volume when sending the correct command as a text message (SMS).
@@ -11,4 +13,5 @@ Inspired by the app Tasker, my goal is to make a user friendly app that responds
 1. Ability to change commands, or add multiple commands
 1. Assign actions to commands (turning the ringer volume all the way up is an action)
 1. Assign authorized users per command/action
-1. New actions such as responding via text with information such as GPS coordinates, etc.
+1. "Where are you?" type command/action where it looks up the GPS coordinates and responds with a Google Maps link automatically
+1. Ability to authorize via passphrase, in case of lost phone, etc.
