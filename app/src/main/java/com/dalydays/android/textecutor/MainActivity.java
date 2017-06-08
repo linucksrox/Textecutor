@@ -209,12 +209,3 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mCursorAdapter.swapCursor(null);
     }
 }
-
-// DONE Implement a SQLite database to store preferences, authorized contacts, blocked numbers, etc.
-// DONE Allow the user to choose from a list of contacts from the contacts content provider, so that only the contacts chosen are allowed to send text commands
-// DONE Next, implement CursorLoader and use notify technique instead of always calling printAllowedContactList()
-// TODO Allow the user to change the text string that initiates the full volume command
-// TODO Allow the user to add different types of commands, with different text strings, and tied to different sets of authorized users (or a global list)
-// TODO Wizard for implementing common use cases like full volume for trusted contacts
-// TODO Help within the app explaining how to do things, as interactive as possible (or the app should be as intuitive as possible, so documentation is not required)
-// TODO Add empty view when list is empty
