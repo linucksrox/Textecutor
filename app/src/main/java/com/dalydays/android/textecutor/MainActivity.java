@@ -134,13 +134,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 String number = cursor.getString(cursor.getColumnIndexOrThrow(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER));
                 if (phoneNo == number) {
                     alreadyAdded = true;
+                    Toast.makeText(this, R.string.message_contact_already_added, Toast.LENGTH_SHORT).show();
                     break;
                 }
             }
             existingLookup.close();
 
             if (!alreadyAdded) {
-
                 /* Insert contact into allowed contact table */
                 // create map of values
                 ContentValues values = new ContentValues();
