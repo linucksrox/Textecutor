@@ -14,7 +14,10 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,13 +31,15 @@ import android.widget.Toast;
 import com.dalydays.android.textecutor.data.TextecutorContract.*;
 import com.dalydays.android.textecutor.data.TextecutorCursorAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     static final String LOG_TAG = MainActivity.class.getSimpleName();
     static final int MY_RECEIVE_SMS_REQUEST_CODE = 1;
     static final int PICK_CONTACT = 1;
+    private static final int CONTACT_LOADER = 0;
     Button addContactButton;
     ListView mContactList;
+    TextecutorCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,11 @@ public class MainActivity extends AppCompatActivity {
                 showDeleteConfirmationDialog(id);
             }
         });
-        printAllowedContactList();
+
+        mCursorAdapter = new TextecutorCursorAdapter(this, null);
+        mContactList.setAdapter(mCursorAdapter);
+
+        getSupportLoaderManager().initLoader(CONTACT_LOADER, null, this);
     }
 
     @Override
@@ -81,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             switch (requestCode) {
                 case PICK_CONTACT:
                     contactPicked(data);
-                    printAllowedContactList();
                     break;
             }
         } else {
@@ -138,21 +146,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void printAllowedContactList() {
-        String[] projection = {
-                AllowedContactEntry._ID,
-                AllowedContactEntry.COLUMN_NAME_NAME,
-                AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
-        };
-
-        String sortOrder = AllowedContactEntry.COLUMN_NAME_NAME + " ASC";
-
-        Cursor cursor = getContentResolver().query(AllowedContactEntry.CONTENT_URI, projection, null, null, sortOrder);
-
-        TextecutorCursorAdapter contactCursorAdapter = new TextecutorCursorAdapter(this, cursor);
-        mContactList.setAdapter(contactCursorAdapter);
-    }
-
     private void showDeleteConfirmationDialog(final long contactId) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
@@ -184,8 +177,6 @@ public class MainActivity extends AppCompatActivity {
 
         int rowsDeleted = getContentResolver().delete(contactContentUri, null, null);
 
-        printAllowedContactList();
-
         // Show a toast with the results
         if (rowsDeleted > 0) {
             Log.v(LOG_TAG, getResources().getString(R.string.toast_message_deletion_successful));
@@ -194,11 +185,34 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.toast_message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                AllowedContactEntry._ID,
+                AllowedContactEntry.COLUMN_NAME_NAME,
+                AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
+        };
+
+        String sortOrder = AllowedContactEntry.COLUMN_NAME_NAME + " ASC";
+
+        return new CursorLoader(this, AllowedContactEntry.CONTENT_URI, projection, null, null, sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
+    }
 }
 
 // DONE Implement a SQLite database to store preferences, authorized contacts, blocked numbers, etc.
 // DONE Allow the user to choose from a list of contacts from the contacts content provider, so that only the contacts chosen are allowed to send text commands
-// TODO Next, implement CursorLoader and use notify technique instead of always calling printAllowedContactList()
+// DONE Next, implement CursorLoader and use notify technique instead of always calling printAllowedContactList()
 // TODO Allow the user to change the text string that initiates the full volume command
 // TODO Allow the user to add different types of commands, with different text strings, and tied to different sets of authorized users (or a global list)
 // TODO Wizard for implementing common use cases like full volume for trusted contacts
