@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.dalydays.android.textecutor.data.TextecutorContract;
 import com.dalydays.android.textecutor.data.TextecutorContract.*;
 import com.dalydays.android.textecutor.data.TextecutorCursorAdapter;
 
@@ -112,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             cursor = getContentResolver().query(uri, null, null, null, null);
             cursor.moveToFirst();
             // column index of the phone number
-            int  phoneIndex =cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             // column index of the contact name
-            int  nameIndex =cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+            int  nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
 
             // get the phone number and parse it to remove non-numeric values
             phoneNo = cursor.getString(phoneIndex);
@@ -123,24 +124,41 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             name = cursor.getString(nameIndex);
             Log.d(LOG_TAG, "Contact name/phone number: " + name + "/" + phoneNo);
 
-            /* Insert contact into allowed contact table */
-            // create map of values
-            ContentValues values = new ContentValues();
-            values.put(AllowedContactEntry.COLUMN_NAME_NAME, name);
-            values.put(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER, phoneNo);
-
-            // insert the new row using the content provider
-            Uri newProductUri = getContentResolver().insert(AllowedContactEntry.CONTENT_URI, values);
-            Long newRowId = ContentUris.parseId(newProductUri);
-
-            if (newRowId >= 1) {
-                // I can't believe it's not failure!
-                Log.v(LOG_TAG, getString(R.string.message_add_allowed_contact_success));
+            // If the contact already exists in the list, then don't add it again
+            boolean alreadyAdded = false;
+            String[] projection = {
+                    AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
+            };
+            Cursor existingLookup = getContentResolver().query(AllowedContactEntry.CONTENT_URI, projection, null, null, null);
+            while (existingLookup.moveToNext()) {
+                String number = cursor.getString(cursor.getColumnIndexOrThrow(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER));
+                if (phoneNo == number) {
+                    alreadyAdded = true;
+                    break;
+                }
             }
-            else {
-                // DANG it failed
-                Log.e(LOG_TAG, getString(R.string.message_add_allowed_contact_fail));
-                Toast.makeText(this, R.string.message_add_allowed_contact_fail, Toast.LENGTH_SHORT).show();
+            existingLookup.close();
+
+            if (!alreadyAdded) {
+
+                /* Insert contact into allowed contact table */
+                // create map of values
+                ContentValues values = new ContentValues();
+                values.put(AllowedContactEntry.COLUMN_NAME_NAME, name);
+                values.put(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER, phoneNo);
+
+                // insert the new row using the content provider
+                Uri newProductUri = getContentResolver().insert(AllowedContactEntry.CONTENT_URI, values);
+                Long newRowId = ContentUris.parseId(newProductUri);
+
+                if (newRowId >= 1) {
+                    // I can't believe it's not failure!
+                    Log.v(LOG_TAG, getString(R.string.message_add_allowed_contact_success));
+                } else {
+                    // DANG it failed
+                    Log.e(LOG_TAG, getString(R.string.message_add_allowed_contact_fail));
+                    Toast.makeText(this, R.string.message_add_allowed_contact_fail, Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
