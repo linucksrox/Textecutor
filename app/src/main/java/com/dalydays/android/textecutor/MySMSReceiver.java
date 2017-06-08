@@ -13,7 +13,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.dalydays.android.textecutor.data.TextecutorContract;
+import com.dalydays.android.textecutor.data.TextecutorContract.*;
 
 /**
  * Created by edaly on 7/25/2016.
@@ -57,16 +57,16 @@ public class MySMSReceiver extends BroadcastReceiver {
         /* Verify that the sender is allowed and the message matches the command needed to turn the volume up */
         // Get a list of all numbers on the allowed list
         String[] projection = {
-                TextecutorContract.AllowedContactEntry._ID,
-                TextecutorContract.AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
+                AllowedContactEntry._ID,
+                AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
         };
 
-        Cursor cursor = context.getContentResolver().query(TextecutorContract.AllowedContactEntry.CONTENT_URI, projection, null, null, null);
+        Cursor cursor = context.getContentResolver().query(AllowedContactEntry.CONTENT_URI, projection, null, null, null);
 
         String number;
 
         while (cursor.moveToNext()) {
-            number = cursor.getString(cursor.getColumnIndexOrThrow(TextecutorContract.AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER));
+            number = cursor.getString(cursor.getColumnIndexOrThrow(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER));
             if (sender.contains(number)) {
                 if (messageString.toLowerCase().contains("full volume")) {
 
@@ -97,5 +97,6 @@ public class MySMSReceiver extends BroadcastReceiver {
                 Log.v(LOG_TAG, " text received, but sender " + sender + " does not match authorized user " + number);
             }
         }
+        cursor.close();
     }
 }
