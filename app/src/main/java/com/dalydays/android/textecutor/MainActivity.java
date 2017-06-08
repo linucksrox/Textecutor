@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * @param data
      */
     private void contactPicked(Intent data) {
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             String phoneNo;
             String name;
@@ -134,12 +134,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Long newRowId = ContentUris.parseId(newProductUri);
 
             if (newRowId >= 1) {
-                // OMG it actually worked!
-                Toast.makeText(this, "OMG You added a contact to the allowed list!", Toast.LENGTH_SHORT).show();
+                // I can't believe it's not failure!
+                Log.v(LOG_TAG, getString(R.string.message_add_allowed_contact_success));
             }
             else {
-                // DANG fail
-                Toast.makeText(this, "DANG it failed!", Toast.LENGTH_SHORT).show();
+                // DANG it failed
+                Log.e(LOG_TAG, getString(R.string.message_add_allowed_contact_fail));
+                Toast.makeText(this, R.string.message_add_allowed_contact_fail, Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,12 +178,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         int rowsDeleted = getContentResolver().delete(contactContentUri, null, null);
 
-        // Show a toast with the results
+        // Check the results
         if (rowsDeleted > 0) {
-            Log.v(LOG_TAG, getResources().getString(R.string.toast_message_deletion_successful));
+            Log.v(LOG_TAG, getString(R.string.message_deletion_successful));
         }
         else {
-            Toast.makeText(this, R.string.toast_message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
+            Log.e(LOG_TAG, getString(R.string.message_failed_to_delete_contact));
         }
     }
 
