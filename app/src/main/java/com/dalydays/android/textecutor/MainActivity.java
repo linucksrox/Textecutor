@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             phoneNo = phoneNo.replaceAll("[^\\d]", "");
 
             name = cursor.getString(nameIndex);
-            Log.d(LOG_TAG, "Contact name/phone number: " + name + "/" + phoneNo);
+            Log.v(LOG_TAG, "Contact name/phone number: " + name + "/" + phoneNo);
 
             // If the contact already exists in the list, then don't add it again
             boolean alreadyAdded = false;
@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             };
             Cursor existingLookup = getContentResolver().query(AllowedContactEntry.CONTENT_URI, projection, null, null, null);
             while (existingLookup.moveToNext()) {
-                String number = cursor.getString(cursor.getColumnIndexOrThrow(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER));
-                if (phoneNo == number) {
+                String number = existingLookup.getString(existingLookup.getColumnIndexOrThrow(AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER));
+                if (phoneNo.equals(number)) {
                     alreadyAdded = true;
                     Toast.makeText(this, R.string.message_contact_already_added, Toast.LENGTH_SHORT).show();
                     break;
