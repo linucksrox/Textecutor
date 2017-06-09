@@ -51,8 +51,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     Log.d(LOG_TAG, "Permission was granted for READ_SMS");
                 }
                 else {
-                    // permission denied, explain why this is wrong and bad
-                    // dialog box?
+                    // Permission denied, explain why this is wrong and bad
+                    // We should show a dialog box with a quick explanation about why this is necessary for the app to function,
+                    // and include a link to the app's permission settings so the user can manually enable it (in case we get
+                    // to a point where the user denied, checked do not ask again, and will never see the runtime prompt again).
                     Log.d(LOG_TAG, "Permission was denied for READ_SMS");
                 }
             }
