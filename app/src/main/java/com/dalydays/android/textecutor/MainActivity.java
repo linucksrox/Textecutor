@@ -43,25 +43,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     TextecutorCursorAdapter mCursorAdapter;
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
-            case MY_RECEIVE_SMS_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(LOG_TAG, "Permission was granted for READ_SMS");
-                }
-                else {
-                    // Permission denied, explain why this is wrong and bad
-                    // We should show a dialog box with a quick explanation about why this is necessary for the app to function,
-                    // and include a link to the app's permission settings so the user can manually enable it (in case we get
-                    // to a point where the user denied, checked do not ask again, and will never see the runtime prompt again).
-                    Log.d(LOG_TAG, "Permission was denied for READ_SMS");
-                }
-            }
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -222,6 +203,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         else {
             Toast.makeText(this, R.string.message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
             Log.e(LOG_TAG, getString(R.string.message_failed_to_delete_contact));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case MY_RECEIVE_SMS_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(LOG_TAG, "Permission was granted for READ_SMS");
+                }
+                else {
+                    // Permission denied, explain why this is wrong and bad
+                    // We should show a dialog box with a quick explanation about why this is necessary for the app to function,
+                    // and include a link to the app's permission settings so the user can manually enable it (in case we get
+                    // to a point where the user denied, checked do not ask again, and will never see the runtime prompt again).
+                    Log.d(LOG_TAG, "Permission was denied for READ_SMS");
+                }
+            }
         }
     }
 
