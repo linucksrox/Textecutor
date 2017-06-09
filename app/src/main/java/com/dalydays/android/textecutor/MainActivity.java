@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -28,7 +29,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.dalydays.android.textecutor.data.TextecutorContract;
 import com.dalydays.android.textecutor.data.TextecutorContract.*;
 import com.dalydays.android.textecutor.data.TextecutorCursorAdapter;
 
@@ -41,6 +41,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Button addContactButton;
     ListView mContactList;
     TextecutorCursorAdapter mCursorAdapter;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case MY_RECEIVE_SMS_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(LOG_TAG, "Permission was granted for READ_SMS");
+                }
+                else {
+                    // permission denied, explain why this is wrong and bad
+                    // dialog box?
+                    Log.d(LOG_TAG, "Permission was denied for READ_SMS");
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
