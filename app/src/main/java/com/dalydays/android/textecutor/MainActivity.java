@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // always ask for Notification permission when opening the app, if not already set
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !notificationManager.isNotificationPolicyAccessGranted()) {
+            // TODO Before jumping into the Do Not Disturb screen, we need to explain what's going on here
+            // dialog window should explain "Textecutor needs control over Do Not Disturb settings in order to be able
+            // to turn off Do Not Disturb mode. Please enable Do Not Disturb access for Textecutor on the next screen."
             Intent getNotificationAccessIntent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             startActivity(getNotificationAccessIntent);
         }
