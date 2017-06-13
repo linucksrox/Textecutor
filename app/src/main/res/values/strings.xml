@@ -9,4 +9,7 @@
     <string name="message_add_allowed_contact_success">Successfully added a contact to the allowed list from the contact database.</string>
     <string name="message_add_allowed_contact_fail">Failed to insert record into allowed list from contact database.</string>
     <string name="message_contact_already_added">This contact was already on the allowed list.</string>
+    <string name="alert_proceed">Proceed</string>
+    <string name="do_not_disturb_explanation">Textecutor needs you to enable Do Not Disturb access so that it can turn your volume up and disable Do Not Disturb mode. Do you want to proceed?</string>
+    <string name="do_not_disturb_question_title">Give Textecutor Do Not Disturb access?</string>
 </resources>

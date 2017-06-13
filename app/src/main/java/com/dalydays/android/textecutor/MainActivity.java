@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // TODO Before jumping into the Do Not Disturb screen, we need to explain what's going on here
             // dialog window should explain "Textecutor needs control over Do Not Disturb settings in order to be able
             // to turn off Do Not Disturb mode. Please enable Do Not Disturb access for Textecutor on the next screen."
-            Intent getNotificationAccessIntent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-            startActivity(getNotificationAccessIntent);
+            showDoNotDisturbExplanation();
         }
 
         addContactButton = (Button) findViewById(R.id.btn_add_authorized_contact);
@@ -207,6 +206,34 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Toast.makeText(this, R.string.message_failed_to_delete_contact, Toast.LENGTH_SHORT).show();
             Log.e(LOG_TAG, getString(R.string.message_failed_to_delete_contact));
         }
+    }
+
+    private void showDoNotDisturbExplanation() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.do_not_disturb_question_title);
+        builder.setMessage(R.string.do_not_disturb_explanation);
+        builder.setPositiveButton(R.string.alert_proceed, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked go ahead button, so jump to do not disturb settings
+                Intent getNotificationAccessIntent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                startActivity(getNotificationAccessIntent);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
