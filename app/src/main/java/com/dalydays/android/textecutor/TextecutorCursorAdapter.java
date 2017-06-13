@@ -1,4 +1,4 @@
-package com.dalydays.android.textecutor.data;
+package com.dalydays.android.textecutor;
 
 import android.content.Context;
 import android.database.Cursor;

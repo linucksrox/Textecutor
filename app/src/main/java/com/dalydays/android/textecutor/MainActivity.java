@@ -30,7 +30,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dalydays.android.textecutor.data.TextecutorContract.*;
-import com.dalydays.android.textecutor.data.TextecutorCursorAdapter;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
