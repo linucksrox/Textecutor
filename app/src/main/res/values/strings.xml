@@ -12,4 +12,6 @@
     <string name="alert_proceed">Proceed</string>
     <string name="do_not_disturb_explanation">Textecutor needs you to enable Do Not Disturb access so that it can turn your volume up and disable Do Not Disturb mode. Do you want to proceed?</string>
     <string name="do_not_disturb_question_title">Give Textecutor Do Not Disturb access?</string>
+    <string name="message_sms_permission_explanation">Textecutor needs access to read SMS so that it can watch for incoming commands. Without this permission, Textecutor cannot function.</string>
+    <string name="ok">OK</string>
 </resources>

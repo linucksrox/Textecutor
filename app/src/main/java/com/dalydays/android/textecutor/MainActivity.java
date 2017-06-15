@@ -205,8 +205,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void showDoNotDisturbExplanation() {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.do_not_disturb_question_title);
         builder.setMessage(R.string.do_not_disturb_explanation);
@@ -220,7 +218,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showSMSPermissionExplanation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.message_sms_permission_explanation);
+        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -241,10 +255,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     Log.d(LOG_TAG, "Permission was granted for READ_SMS");
                 }
                 else {
-                    // Permission denied, explain why this is wrong and bad
-                    // We should show a dialog box with a quick explanation about why this is necessary for the app to function,
-                    // and include a link to the app's permission settings so the user can manually enable it (in case we get
-                    // to a point where the user denied, checked do not ask again, and will never see the runtime prompt again).
+                    // If the user denied the SMS permission, explain why they should have granted it instead
+                    showSMSPermissionExplanation();
                     Log.d(LOG_TAG, "Permission was denied for READ_SMS");
                 }
             }
