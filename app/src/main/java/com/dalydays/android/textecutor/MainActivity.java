@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             name = cursor.getString(nameIndex);
             Log.v(LOG_TAG, "Contact name/phone number: " + name + "/" + phoneNo);
 
+            cursor.close();
+
             // If the contact already exists in the list, then don't add it again
             boolean alreadyAdded = false;
             String[] projection = {
