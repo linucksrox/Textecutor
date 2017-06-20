@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.dalydays.android.textecutor.R;
 import com.dalydays.android.textecutor.data.TextecutorContract.*;
 
 /**
@@ -23,7 +22,7 @@ public class TextecutorCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.allowed_contact_list_item, parent, false);
     }
 
     @Override
