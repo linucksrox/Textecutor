@@ -14,6 +14,7 @@ public final class TextecutorContract {
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_ALLOWED_CONTACT = "allowedcontact";
     public static final String PATH_ACTION = "action";
+    public static final String PATH_ACTION_CONTACT = "action_contact";
 
     // private constructor prevents accidental instantiation of the contract class
     private TextecutorContract() {}
@@ -39,5 +40,15 @@ public final class TextecutorContract {
         public static final String COLUMN_NAME_ACTION = "action";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_ENABLED = "enabled";
+    }
+
+    /**
+     * The action_contact table is a tie table linking allowed contacts to available actions
+     */
+    public static class ActionContactEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_URI, PATH_ACTION_CONTACT);
+        public static final String TABLE_NAME = "action_contact";
+        public static final String COLUMN_NAME_ACTION = "action";
+        public static final String COLUMN_NAME_CONTACT = "contact";
     }
 }
