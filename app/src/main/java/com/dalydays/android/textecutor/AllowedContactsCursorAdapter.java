@@ -14,9 +14,9 @@ import com.dalydays.android.textecutor.data.TextecutorContract.*;
  * Created by edaly on 5/31/2017.
  */
 
-public class TextecutorCursorAdapter extends CursorAdapter {
+public class AllowedContactsCursorAdapter extends CursorAdapter {
 
-    public TextecutorCursorAdapter(Context context, Cursor c) {
+    public AllowedContactsCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
 

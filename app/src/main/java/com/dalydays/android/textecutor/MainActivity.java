@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Button addContactButton;
     Button showActionsButton;
     ListView mContactList;
-    TextecutorCursorAdapter mCursorAdapter;
+    AllowedContactsCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        mCursorAdapter = new TextecutorCursorAdapter(this, null);
+        mCursorAdapter = new AllowedContactsCursorAdapter(this, null);
         mContactList.setAdapter(mCursorAdapter);
 
         getSupportLoaderManager().initLoader(CONTACT_LOADER, null, this);
