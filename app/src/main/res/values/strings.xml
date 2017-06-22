@@ -15,5 +15,5 @@
     <string name="message_sms_permission_explanation">Textecutor needs access to read SMS so that it can watch for incoming commands. Without this permission, Textecutor cannot function.</string>
     <string name="ok">OK</string>
     <string name="action_full_volume_name">Full Volume</string>
-    <string name="action_full_volume_description">Allow people to remotely turn your volume all the way up.</string>
+    <string name="action_full_volume_description">Turns your ringtone to the max volume and disables do not disturb.</string>
 </resources>

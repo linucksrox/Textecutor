@@ -16,6 +16,12 @@
         android:layout_height="wrap_content"
         android:text="@string/add_contact_button_text" />
 
+    <Button
+        android:id="@+id/btn_show_action_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actions" />
+
     <ListView
         android:id="@+id/allowed_contacts_list"
         android:layout_width="match_parent"
