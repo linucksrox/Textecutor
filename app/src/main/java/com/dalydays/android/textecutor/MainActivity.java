@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     static final int PICK_CONTACT = 1;
     private static final int CONTACT_LOADER = 0;
     Button addContactButton;
-    Button showActionsButton;
     ListView mContactList;
     AllowedContactsCursorAdapter mCursorAdapter;
 
@@ -64,15 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                 startActivityForResult(intent, PICK_CONTACT);
-            }
-        });
-
-        showActionsButton = (Button) findViewById(R.id.btn_show_action_list);
-        showActionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ActionActivity.class);
-                startActivity(intent);
             }
         });
 
