@@ -61,7 +61,7 @@ public class TextecutorDbHelper extends SQLiteOpenHelper {
                 ActionEntry.COLUMN_NAME_ENABLED + ") VALUES (" +
                 "\"" + context.getString(R.string.action_full_volume_name) + "\", " +
                 "\"" + context.getString(R.string.action_full_volume_description) + "\"" +
-                ", 0)";
+                ", 1)";
     }
 
     @Override

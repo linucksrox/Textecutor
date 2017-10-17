@@ -36,16 +36,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     static final String LOG_TAG = MainActivity.class.getSimpleName();
     static final int MY_RECEIVE_SMS_REQUEST_CODE = 1;
     static final int PICK_CONTACT = 1;
-    private static final int CONTACT_LOADER = 0;
-    Button addContactButton;
-    Button showActionsButton;
-    ListView mContactList;
-    AllowedContactsCursorAdapter mCursorAdapter;
+    private static final int ACTION_LOADER = 0;
+    ListView mActionList;
+    ActionsCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_action);
 
         // always ask for RECEIVE_SMS permission when opening the app, if not already set
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_DENIED) {
@@ -58,37 +56,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             showDoNotDisturbExplanation();
         }
 
-        addContactButton = (Button) findViewById(R.id.btn_add_authorized_contact);
-        addContactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(intent, PICK_CONTACT);
-            }
-        });
-
-        showActionsButton = (Button) findViewById(R.id.btn_show_action_list);
-        showActionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ActionActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // set up ListView and adapter
-        mContactList = (ListView) findViewById(R.id.allowed_contacts_list);
-        mContactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mActionList = (ListView) findViewById(R.id.action_list);
+        mActionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                showDeleteConfirmationDialog(id);
+                //showDeleteConfirmationDialog(id);
             }
         });
 
-        mCursorAdapter = new AllowedContactsCursorAdapter(this, null);
-        mContactList.setAdapter(mCursorAdapter);
+        mCursorAdapter = new ActionsCursorAdapter(this, null);
+        mActionList.setAdapter(mCursorAdapter);
 
-        getSupportLoaderManager().initLoader(CONTACT_LOADER, null, this);
+        getSupportLoaderManager().initLoader(ACTION_LOADER, null, this);
     }
 
     @Override
@@ -278,14 +258,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
-                AllowedContactEntry._ID,
-                AllowedContactEntry.COLUMN_NAME_NAME,
-                AllowedContactEntry.COLUMN_NAME_PHONE_NUMBER
+                ActionEntry._ID,
+                ActionEntry.COLUMN_NAME_ACTION,
+                ActionEntry.COLUMN_NAME_DESCRIPTION,
+                ActionEntry.COLUMN_NAME_ENABLED
         };
 
-        String sortOrder = AllowedContactEntry.COLUMN_NAME_NAME + " ASC";
+        String sortOrder = ActionEntry.COLUMN_NAME_ACTION + " ASC";
 
-        return new CursorLoader(this, AllowedContactEntry.CONTENT_URI, projection, null, null, sortOrder);
+        return new CursorLoader(this, ActionEntry.CONTENT_URI, projection, null, null, sortOrder);
     }
 
     @Override

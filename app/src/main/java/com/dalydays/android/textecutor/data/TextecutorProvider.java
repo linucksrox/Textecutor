@@ -22,10 +22,12 @@ public class TextecutorProvider extends ContentProvider {
     // Set up URI matcher codes
     private static final int CONTACTS = 100;
     private static final int CONTACT_ID = 101;
+    private static final int ACTIONS = 200;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         sUriMatcher.addURI(TextecutorContract.CONTENT_AUTHORITY, TextecutorContract.PATH_ALLOWED_CONTACT, CONTACTS);
         sUriMatcher.addURI(TextecutorContract.CONTENT_AUTHORITY, TextecutorContract.PATH_ALLOWED_CONTACT + "/#", CONTACT_ID);
+        sUriMatcher.addURI(TextecutorContract.CONTENT_AUTHORITY, TextecutorContract.PATH_ACTION, ACTIONS);
     }
 
     @Override
@@ -49,6 +51,9 @@ public class TextecutorProvider extends ContentProvider {
                 selection = AllowedContactEntry._ID + "=?";
                 selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(AllowedContactEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case ACTIONS:
+                cursor = database.query(ActionEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
@@ -109,7 +114,7 @@ public class TextecutorProvider extends ContentProvider {
                 numRowsDeleted = database.delete(AllowedContactEntry.TABLE_NAME, whereClause, whereArgs);
                 break;
             case CONTACT_ID:
-                // Delete a single row from the pets table using the given ID
+                // Delete a single row from the allowed contacts table using the given ID
                 whereClause = AllowedContactEntry._ID + "=?";
                 whereArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
                 numRowsDeleted = database.delete(AllowedContactEntry.TABLE_NAME, whereClause, whereArgs);
