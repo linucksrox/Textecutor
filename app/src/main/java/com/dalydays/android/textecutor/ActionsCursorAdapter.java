@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.dalydays.android.textecutor.data.TextecutorContract.ActionEntry;
@@ -27,13 +28,21 @@ public class ActionsCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView contactNameTV = (TextView) view.findViewById(R.id.tv_action);
-        TextView contactNumberTV = (TextView) view.findViewById(R.id.tv_action_description);
+        TextView actionNameTV = (TextView) view.findViewById(R.id.tv_action);
+        TextView actionDescriptionTV = (TextView) view.findViewById(R.id.tv_action_description);
+        Switch actionEnabledSwitch = (Switch) view.findViewById(R.id.switch_action_enable);
 
-        String contactNameString = cursor.getString(cursor.getColumnIndexOrThrow(ActionEntry.COLUMN_NAME_ACTION));
-        String contactNumberString = cursor.getString(cursor.getColumnIndexOrThrow(ActionEntry.COLUMN_NAME_DESCRIPTION));
+        String actionNameString = cursor.getString(cursor.getColumnIndexOrThrow(ActionEntry.COLUMN_NAME_ACTION));
+        String actionDescriptionString = cursor.getString(cursor.getColumnIndexOrThrow(ActionEntry.COLUMN_NAME_DESCRIPTION));
+        int actionEnabled = cursor.getInt(cursor.getColumnIndexOrThrow(ActionEntry.COLUMN_NAME_ENABLED));
 
-        contactNameTV.setText(contactNameString);
-        contactNumberTV.setText(contactNumberString);
+        actionNameTV.setText(actionNameString);
+        actionDescriptionTV.setText(actionDescriptionString);
+        if (actionEnabled == 1) {
+            actionEnabledSwitch.setChecked(true);
+        }
+        else {
+            actionEnabledSwitch.setChecked(false);
+        }
     }
 }
